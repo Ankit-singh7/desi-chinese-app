@@ -1,0 +1,33 @@
+ion-content{
+    height: 100px;
+}
+
+
+
+p{
+    color: #2c3847;
+}
+
+ion-icon{
+    font-size: 25px;
+}
+
+
+
+
+    .flex_row {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row; 
+    flex-direction: row;
+    }
+
+button {
+    background: transparent;
+}
+
+
+button:focus {
+    outline: none;
+    }
+

@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>billing</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item lines="full" style="--background:'#5bb362';border-radius: 10px; color:white">
+           <p>Total Sale : <B>&#x20B9; {{total}}</B></p>
+        </ion-item>
+      </ion-col>
+      <ion-col size="6">
+        <ion-item lines="full">
+          <ionic-selectable placeholder="Payment Mode" [(ngModel)]="selectedPaymentMode" [items]="payment" itemValueField="id"
+            itemTextField="name" [canSearch]="true" (onChange)="paymentChange($event)" headerColor="danger">
+      
+            <ng-template ionicSelectableCloseButtonTemplate>
+              <ion-icon name="close-circle"></ion-icon>
+            </ng-template>
+      
+            <ng-template ionicSelectableTitleTemplate>
+              Payment Mode
+            </ng-template>
+      
+          </ionic-selectable>
+        </ion-item>
+      </ion-col>
+      <ion-col size="6">
+        <ion-item lines="full">
+          <ionic-selectable placeholder="Bill Type" [(ngModel)]="selectedDeliveryMode" [items]="mode" itemValueField="id"
+            itemTextField="name" [canSearch]="true" (onChange)="modeChange($event)" headerColor="danger">
+      
+            <ng-template ionicSelectableCloseButtonTemplate>
+              <ion-icon name="close-circle"></ion-icon>
+            </ng-template>
+      
+            <ng-template ionicSelectableTitleTemplate>
+              Bill Type
+            </ng-template>
+      
+          </ionic-selectable>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12">
+        <ion-searchbar placeholder="Search by Name" [(ngModel)]="search" name="search" (ionChange)="searchedText()" mode="md"></ion-searchbar>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+     <ng-container *ngIf="billArray.length>0; else noidea">
+       
+       <ion-list *ngFor="let item of billArray | filter: 'customer_name' :search | filter: 'payment_mode': selectedPaymentModeName | filter: 'delivery_mode': selectedDeliveryModeName">
+      <ion-item lines="full">
+      <ion-label>
+
+        <h2 slot="start">{{item?.customer_name?item?.customer_name:'Not Mentioned'}}</h2>
+        <p><b>Token No: {{item.token_id}}</b></p>
+        <p><b>Bill No: {{item.bill_id}}</b></p>
+        <p><b>Cost: &#x20B9; {{item.total_price}}</b></p>
+        <a href="tel:{{item.phone?item.phone:'2323443223'}}">
+          <ion-button mode="ios" size="small" color="tertiary" routerLink="/edit-bill"  [queryParams]="{id:item.bill_id}">
+            <ion-icon slot="start" mode="md" name="create"></ion-icon>
+            Edit
+          </ion-button>
+        </a>
+        <ion-button mode="ios" size="small" color="tertiary" routerLink="/con/billing-view" [queryParams]="{id:item.bill_id}">
+          <ion-icon slot="start" mode="md" name="eye"></ion-icon>
+          View
+        </ion-button>
+      </ion-label>
+
+    </ion-item>
+        </ion-list>
+</ng-container>
+<ng-template #noidea>
+  <ion-item lines="none" class="mar" mode="ios" detail="false" rippleEffect="true">
+
+    <ion-label style="color: #2c3847;font-weight:'bold'" class="ion-text-center">No Bills For Today</ion-label>
+ 
+  </ion-item>
+  
+</ng-template>
+</ion-content>
