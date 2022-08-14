@@ -1,5 +1,7 @@
 {
   "name": "Desi-chinese",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
