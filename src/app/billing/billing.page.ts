@@ -78,6 +78,9 @@ export class BillingPage extends RouterPage {
   public emptyMessage = 'Please select a category'
   public totalInput:Number = null
   public billCount;
+  public discount = 0;
+  public SGST = 0;
+  public CGST = 0;
   payment = [];
 
   mode = []
@@ -128,10 +131,11 @@ export class BillingPage extends RouterPage {
   onEnter(){
     this.getMostlyUsedList()
     this.getCategoryList();
-    this.getCurrentStatus();
+    // this.getCurrentStatus();
     this.getPaymentList();
     this.getModeList();
     this.getBranchDetail()
+    this.getDiscount();
   }
 
 
@@ -157,6 +161,14 @@ export class BillingPage extends RouterPage {
 
   onDualChange(){
     console.log(this.dual_payment)
+  }
+
+  getDiscount(){
+     this.invoiceService.getDiscount().subscribe((res) => {
+       this.discount = res.data?.discount
+       this.SGST  = res.data?.SGST;
+       this.CGST = res.data?.CGST;
+     })
   }
 
 
@@ -524,9 +536,16 @@ export class BillingPage extends RouterPage {
      let total;
      if(this.selectedDeliveryMode?.name === 'Swiggy' || this.selectedDeliveryMode?.name === 'Zomato') {
        total = this.totalInput
+     } else if(this.selectedDeliveryMode?.name === 'Dine-in' || this.selectedDeliveryMode?.name === 'Dine-In') {
+       let sgst = (this.SGST/100)*Number(this.total)
+       let cgst = (this.CGST/100)*Number(this.total)
+       let service_charge = (this.discount/100)*Number(this.total)
+       total = Math.round(Number(sgst + cgst + service_charge + this.total))
      } else {
        total = this.total
      }
+
+
       
       let tempArr = this.selectedItems.map((item) => ({
         food_name:item.name,
@@ -552,6 +571,11 @@ export class BillingPage extends RouterPage {
           dual_payment_mode: this.dual_payment
         }
       } else if(this.dual_payment) {
+        let total_price = parseInt(this.split_amount_1) + parseInt(this.split_amount_2)
+        let sgst = (this.SGST/100)*Number(total_price)
+        let cgst = (this.CGST/100)*Number(total_price)
+        let service_charge = (this.discount/100)*Number(total_price)
+        let total = Math.round(Number(sgst + cgst + service_charge + total_price))
         data = {
           bill_id: id,
           token_id: `LDC-${this.billCount}`,
@@ -563,7 +587,7 @@ export class BillingPage extends RouterPage {
           payment_mode_1: this.selectedPaymentMode_1?.name,
           payment_mode_2: this.selectedPaymentMode_2?.name,
           delivery_mode: this.selectedDeliveryMode?.name,
-          total_price: parseInt(this.split_amount_1) + parseInt(this.split_amount_2),
+          total_price: total,
           split_amount_1: this.split_amount_1,
           split_amount_2: this.split_amount_2,
           products: tempArr,

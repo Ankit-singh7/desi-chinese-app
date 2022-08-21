@@ -439,11 +439,11 @@
         <div>
          <div  sytle="color:black">
             <h4 style="text-align:center; font-weight: bolder;">LOVE &#10084;&#65039; DESI CHINESE</h4>
-            <p style="text-align:center;font-size: 10px;">{{branchDetail.branch_address}}
-                     <br><span style="font-weight: bold">All Days Open {{branchDetail.branch_start_timing}} to {{branchDetail.branch_end_timing}}</span>
+            <p style="text-align:center;font-size: 10px;">{{branchDetail?.branch_address}}
+                     <br><span style="font-weight: bold">All Days Open {{branchDetail?.branch_start_timing}} to {{branchDetail?.branch_end_timing}}</span>
                      <br>lovedesichinese@gmail.com
                      <br><span style="font-size:12px;font-weight: bolder;">
-                      {{branchDetail.branch_phone}}
+                      {{branchDetail?.branch_phone}}
                     </span>
             </p>
           </div>
@@ -509,8 +509,26 @@
                  </p>
                  </div>
           </ng-container>
-        
-
+          <ng-container *ngIf="selectedDeliveryMode?.name === 'Dine-in' || selectedDeliveryMode?.name === 'Dine-In'">
+            <div style="display:inline-block;font-weight:bold;width:59%;font-size:11px;border:1px solid grey;height:25px;margin-left:1%">
+              <p style="text-align:right;margin-right:1%">CGST</p>
+            </div>
+            <div style="display:inline-block;font-weight:bold;width:38%;font-size:11px;border:1px solid grey;height:25px;">
+             <p style="text-align:center">{{CGST}} %</p>
+           </div>
+           <div style="display:inline-block;font-weight:bold;width:59%;font-size:11px;border:1px solid grey;height:25px;margin-left:1%">
+            <p style="text-align:right;margin-right:1%">SGST</p>
+          </div>
+          <div style="display:inline-block;font-weight:bold;width:38%;font-size:11px;border:1px solid grey;height:25px;">
+           <p style="text-align:center">{{SGST}} %</p>
+         </div>
+         <div style="display:inline-block;font-weight:bold;width:59%;font-size:11px;border:1px solid grey;height:25px;margin-left:1%">
+          <p style="text-align:right;margin-right:1%">Service charge</p>
+        </div>
+        <div style="display:inline-block;font-weight:bold;width:38%;font-size:11px;border:1px solid grey;height:25px;">
+         <p style="text-align:center">{{discount}} %</p>
+       </div>
+          </ng-container>
          <div style="display:inline-block;font-weight:bold;width:59%;font-size:11px;border:1px solid grey;height:25px;margin-left:1%">
            <p style="text-align:right;margin-right:1%">Total</p>
          </div>
@@ -543,9 +561,9 @@
         </ng-container>
 
          <div style="width:100%;;margin-left:1%">
-          <p style="font-size:11px;"><b>#</b> {{branchDetail.footer_1}}</p>
-          <p style="font-size:11px;"><b>#</b> {{branchDetail.footer_2}}</p>
-          <p style="font-size:11px;"><b>#</b> {{branchDetail.footer_3}}</p>
+          <p style="font-size:11px;"><b>#</b> {{branchDetail?.footer_1}}</p>
+          <p style="font-size:11px;"><b>#</b> {{branchDetail?.footer_2}}</p>
+          <p style="font-size:11px;"><b>#</b> {{branchDetail?.footer_3}}</p>
          </div>
          <div>
            <p style="text-align: center;"><b>Thank You Visit Again.</b></p>

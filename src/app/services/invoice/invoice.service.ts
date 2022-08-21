@@ -41,6 +41,11 @@ export class InvoiceService {
     return this.http.get(`${environment.apiURL}/bill/view/all?per_page=500&current_page=1&createdOn=${this.formattedDate}&${str}`)
   }
 
+
+  getDiscount(): Observable<any> {
+    return this.http.get(`${environment.apiURL}/bill/get_discount`)
+  }
+
   public getAllInQueueBill(): Observable<any> {
     return this.http.get(`${environment.apiURL}/bill/view/all?per_page=500&current_page=1&createdOn=${this.formattedDate}&status=in-queue`)
   }
