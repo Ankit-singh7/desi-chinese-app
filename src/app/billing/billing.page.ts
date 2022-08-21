@@ -98,6 +98,9 @@ export class BillingPage extends RouterPage {
   split_amount_1 = null
   split_amount_2 = null
   branchDetail: any;
+  sgst_amount: number;
+  cgst_amount: number;
+  service_charge_amount: number;
 
   constructor(private platform: Platform,
     private file: File,
@@ -537,10 +540,10 @@ export class BillingPage extends RouterPage {
      if(this.selectedDeliveryMode?.name === 'Swiggy' || this.selectedDeliveryMode?.name === 'Zomato') {
        total = this.totalInput
      } else if(this.selectedDeliveryMode?.name === 'Dine-in' || this.selectedDeliveryMode?.name === 'Dine-In') {
-       let sgst = (this.SGST/100)*Number(this.total)
-       let cgst = (this.CGST/100)*Number(this.total)
-       let service_charge = (this.discount/100)*Number(this.total)
-       total = Math.round(Number(sgst + cgst + service_charge + this.total))
+       this.sgst_amount = Math.round((this.SGST/100)*Number(this.total))
+       this.cgst_amount = Math.round((this.CGST/100)*Number(this.total))
+       this.service_charge_amount = Math.round((this.discount/100)*Number(this.total))
+       total = Math.round(Number(this.sgst_amount + this.cgst_amount + this.service_charge_amount + this.total))
      } else {
        total = this.total
      }
@@ -572,10 +575,10 @@ export class BillingPage extends RouterPage {
         }
       } else if(this.dual_payment) {
         let total_price = parseInt(this.split_amount_1) + parseInt(this.split_amount_2)
-        let sgst = (this.SGST/100)*Number(total_price)
-        let cgst = (this.CGST/100)*Number(total_price)
-        let service_charge = (this.discount/100)*Number(total_price)
-        let total = Math.round(Number(sgst + cgst + service_charge + total_price))
+        this.sgst_amount = Math.round((this.SGST/100)*Number(total_price))
+        this.cgst_amount = Math.round((this.CGST/100)*Number(total_price))
+        this.service_charge_amount = Math.round((this.discount/100)*Number(total_price))
+        let total = Math.round(Number(this.sgst_amount + this.cgst_amount + this.service_charge_amount + total_price))
         data = {
           bill_id: id,
           token_id: `LDC-${this.billCount}`,
