@@ -509,14 +509,22 @@
                  </p>
                  </div>
           </ng-container>
-          <div style="display:inline-block;font-weight:bold;width:59%;font-size:11px;border:1px solid grey;height:25px;margin-left:1%">
-            <p style="text-align:right;margin-right:1%">Total</p>
-          </div>
-          <div style="display:inline-block;font-weight:bold;width:38%;font-size:11px;border:1px solid grey;height:25px;">
-           <p style="text-align:center">Rs {{billDetail.total_price - service_charge_amount - cgst_amount - sgst_amount}}</p>
-         </div>
-        
+          <ng-container  *ngIf="selectedDeliveryMode?.name !== 'Dine-in' && selectedDeliveryMode?.name !== 'Dine-In'">
+
+            <div style="display:inline-block;font-weight:bold;width:59%;font-size:11px;border:1px solid grey;height:25px;margin-left:1%">
+              <p style="text-align:right;margin-right:1%">Total</p>
+            </div>
+            <div style="display:inline-block;font-weight:bold;width:38%;font-size:11px;border:1px solid grey;height:25px;">
+             <p style="text-align:center">Rs {{billDetail.total_price}}</p>
+           </div>
+          </ng-container>
           <ng-container *ngIf="selectedDeliveryMode?.name === 'Dine-in' || selectedDeliveryMode?.name === 'Dine-In'">
+            <div style="display:inline-block;font-weight:bold;width:59%;font-size:11px;border:1px solid grey;height:25px;margin-left:1%">
+              <p style="text-align:right;margin-right:1%">Total</p>
+            </div>
+            <div style="display:inline-block;font-weight:bold;width:38%;font-size:11px;border:1px solid grey;height:25px;">
+             <p style="text-align:center">Rs {{billDetail.total_price - service_charge_amount - cgst_amount - sgst_amount}}</p>
+           </div>
             <div style="display:inline-block;width:59%;font-size:11px;border:1px solid grey;height:25px;margin-left:1%">
               <p style="text-align:right;margin-right:1%">Service charges ( {{discount}} %) </p>
             </div>
@@ -535,13 +543,13 @@
             <div style="display:inline-block;width:38%;font-size:11px;border:1px solid grey;height:25px;">
               <p style="text-align:center">Rs {{sgst_amount}}</p>
             </div>
+            <div style="display:inline-block;font-weight:bold;width:59%;font-size:11px;border:1px solid grey;height:25px;margin-left:1%">
+              <p style="text-align:right;margin-right:1%">Grand Total</p>
+            </div>
+            <div style="display:inline-block;font-weight:bold;width:38%;font-size:11px;border:1px solid grey;height:25px;">
+              <p style="text-align:center">Rs {{billDetail.total_price}}</p>
+            </div>
           </ng-container>
-         <div style="display:inline-block;font-weight:bold;width:59%;font-size:11px;border:1px solid grey;height:25px;margin-left:1%">
-           <p style="text-align:right;margin-right:1%">Grand Total</p>
-         </div>
-         <div style="display:inline-block;font-weight:bold;width:38%;font-size:11px;border:1px solid grey;height:25px;">
-          <p style="text-align:center">Rs {{billDetail.total_price}}</p>
-        </div>
         <ng-container *ngIf="!dual_payment">
 
           <div style="display:inline-block;font-weight:bold;width:59%;font-size:11px;border:1px solid grey;height:25px;margin-left:1%">
