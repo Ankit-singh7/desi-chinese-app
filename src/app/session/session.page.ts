@@ -17,7 +17,7 @@ export class SessionPage extends RouterPage{
   public showError = false;
   public userName: any;
   public isWithdrawn = 'false';
-  total: number;
+  total: number = 0;
 
   constructor(private platform: Platform,
     private invoiceService: InvoiceService,

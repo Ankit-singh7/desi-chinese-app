@@ -18,6 +18,7 @@ export class ClosingBalancePage extends RouterPage {
   public userName: any;
   public isWithdrawn = 'false';
   closing_balance: any;
+  total: number = 0;
 
   constructor(private platform: Platform,
     private invoiceService: InvoiceService,
@@ -54,6 +55,7 @@ export class ClosingBalancePage extends RouterPage {
             this.subjectService.setSessionBalance(Number(res.data.session_amount));
             this.sessionDetail = res.data
             this.isWithdrawn = res.data.isWithdrawn
+            this.getAllBills();
         }
         loader.dismiss()
       },err => loader.dismiss())
@@ -126,5 +128,31 @@ export class ClosingBalancePage extends RouterPage {
     });
     await alert.present();
   }
+
+  async getAllBills(){
+    let loader = await this.loading.create({
+      message: 'Please wait...',
+    });
+
+    loader.present().then(() => {
+      this.invoiceService.getAllBill().subscribe((res) => {
+        if(res.data?.result) {
+    
+          this.total = 0
+          for(let item of res.data.result) {
+             this.total = this.total + item.total_price
+          }
+          if(this.isWithdrawn === "true") {
+            this.total  = this.total - this.sessionDetail.withdrawn
+          }
+        } else {
+          this.total = 0;
+        }
+           loader.dismiss()
+      }, err => loader.dismiss())
+
+    })
+  }
+
 
 }
