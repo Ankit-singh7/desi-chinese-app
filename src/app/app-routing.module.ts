@@ -25,7 +25,7 @@ const routes: Routes = [
   {
     path: 'edit-bill',
     loadChildren: () => import('./edit-bill/edit-bill.module').then( m => m.EditBillPageModule)
-  },
+  }
 ];
 
 @NgModule({

@@ -37,6 +37,9 @@ export class HeaderComponent implements OnInit {
         if(this.activatedRoute === '/con/session') {
           this.title = 'Session Status'
         }
+        if(this.activatedRoute === '/con/closing-balance') {
+          this.title = 'Add Closing Balance'
+        }
         if(this.activatedRoute === '/con/setting') {
           this.title = 'Settings'
         }

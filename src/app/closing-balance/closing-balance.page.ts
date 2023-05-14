@@ -6,18 +6,18 @@ import { SubjectService } from '../services/subject/subject.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-session',
-  templateUrl: './session.page.html',
-  styleUrls: ['./session.page.scss'],
+  selector: 'app-closing-balance',
+  templateUrl: './closing-balance.page.html',
+  styleUrls: ['./closing-balance.page.scss'],
 })
-export class SessionPage extends RouterPage{
+export class ClosingBalancePage extends RouterPage {
 
   public sessionDetail:any;
   public withdraw:any;
   public showError = false;
   public userName: any;
   public isWithdrawn = 'false';
-  total: number;
+  closing_balance: any;
 
   constructor(private platform: Platform,
     private invoiceService: InvoiceService,
@@ -33,7 +33,7 @@ export class SessionPage extends RouterPage{
 
   onEnter(){
     this.getCurrentStatus()
-    // this.getAllBills()
+    console.log(this.isWithdrawn)
   }
 
 
@@ -54,7 +54,6 @@ export class SessionPage extends RouterPage{
             this.subjectService.setSessionBalance(Number(res.data.session_amount));
             this.sessionDetail = res.data
             this.isWithdrawn = res.data.isWithdrawn
-            this.getAllBills()
         }
         loader.dismiss()
       },err => loader.dismiss())
@@ -63,25 +62,17 @@ export class SessionPage extends RouterPage{
 
 
 
-  withdrawCash(val){
-    if(val > this.sessionDetail.drawer_balance) {
-      this.showError = true
-    } else {
-      this.showError = false
-      this.isWithdrawn = 'true'
-      let drawerBalance = this.sessionDetail.drawer_balance - val;
-      const data = {
-        withdrawn:val,
-        drawer_balance:drawerBalance,
-        isWithdrawn: 'true'
+  AddClosingBalance(){
+      const payload = {
+        closing_balance: this.closing_balance
       }
-      this.invoiceService.updateSession(data,this.sessionDetail.session_id).subscribe((res) => {
-        this.withdraw  = '';
+      this.invoiceService.updateSession(payload,this.sessionDetail.session_id).subscribe((res) => {
+        this.closing_balance = '';
         this.getCurrentStatus()
       },err=>console.log(err))
     }
 
-  }
+  
 
   async presentPrompt() {
     let alert =await this.alertController.create({
@@ -135,35 +126,5 @@ export class SessionPage extends RouterPage{
     });
     await alert.present();
   }
-
-
-  async getAllBills(){
-    let loader = await this.loading.create({
-      message: 'Please wait...',
-    });
-
-    loader.present().then(() => {
-      this.invoiceService.getAllBill().subscribe((res) => {
-        if(res.data?.result) {
-    
-          this.total = 0
-          for(let item of res.data.result) {
-             this.total = this.total + item.total_price
-          }
-          if(this.isWithdrawn === "true") {
-            this.total  = this.total - this.sessionDetail.withdrawn
-          }
-        } else {
-          this.total = 0;
-        }
-           loader.dismiss()
-      }, err => loader.dismiss())
-
-    })
-  }
-
- 
-
-
 
 }
